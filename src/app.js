@@ -2,21 +2,25 @@
 const express = require("express");
 const app = express();
 
-app.use("/hello/2",(req,res)=>{
-    res.send("Abracadabra!");
+//This will only handle GET call to /user
+app.get("/user",(req,res) => {
+    res.send({ firstName: "Shruti", lastName:"Singh"});
 });
 
-app.use("/hello",(req,res) => {
-    res.send("Hello hello hello!");
+app.post("/user", async(req,res) =>{
+    //saving data to DB 
+    res.send("Data successfully saved")
 });
+
+app.delete("/user",(req,res)=>{
+    res.send("Deleted successfully")
+})
 
 app.use("/test",(req,res)=>{
     res.send("hello from the server!");
 });
 
-// app.use((req,res) => {
-//     res.send("Nmaste shruti! ");
-// });
+
 
 
 
