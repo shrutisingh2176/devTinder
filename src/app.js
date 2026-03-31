@@ -2,10 +2,24 @@
 const express = require("express");
 const app = express();
 
-app.use((req,res) => {
-    res.send("Hello from the server! !!!     ")
-})
+app.use("/hello/2",(req,res)=>{
+    res.send("Abracadabra!");
+});
+
+app.use("/hello",(req,res) => {
+    res.send("Hello hello hello!");
+});
+
+app.use("/test",(req,res)=>{
+    res.send("hello from the server!");
+});
+
+// app.use((req,res) => {
+//     res.send("Nmaste shruti! ");
+// });
 
 
 
-app.listen(3000,()=> {console.log("Server is successfully listening!")});
+app.listen(7777,()=> {
+    console.log("Server is successfully listening!");
+});
