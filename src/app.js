@@ -4,8 +4,11 @@ const app = express();
 
 
 app.get("/getUserData" ,(req,res) =>{
-   throw new Error ("xyz");
+try{  throw new Error ("xyz");
    res.send("User Data Sent");
+}
+catch{ res.status(500).send("Error Contact Team Support");}
+   
 });
 
 app.use("/",(err,req,res,next) => {
