@@ -1,1 +1,5 @@
 node_modules
+resources.yaml
+Test GET call.request.yaml
+definition.yaml
+workspace.globals.yaml
