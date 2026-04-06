@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.json());  // midddleware for reading json data and converting it into js object
 
+
 app.post("/signup", async (req,res)=>{
 console.log(req.body);
 //Creating new instance of the user model
@@ -19,6 +20,69 @@ res.send("User Added Successfully!!");
 };
 });
 
+// Get user by email
+app.get("/user", async (req,res) => {
+    const userEmail = req.body.emailId;
+    try{
+    const users =await User.findOne({emailId: userEmail})
+    
+        if(users.length ===0){
+            res.status(404).send("User not found");
+        } else {
+            res.send(users);
+        }
+    }
+    catch(err) {
+        res.status(400).send("Something went wrong !!")
+    }
+
+})
+
+
+//Feed API - GET  /feed -get all the users from the database 
+app.get("/feed", async (req,res) => {
+    try{
+            const users = await User.find({});
+            if(users.length===0){
+                res.send("No user found!!")
+            } else {
+                console.log(users);
+                res.send(users);
+            }
+       }
+     catch (err) {
+        res.status(400).send("Something went wrong !!")
+     }
+});
+
+
+//delete user API - deleting a user by its id
+app.delete("/user", async (req, res) => {
+    const userId = req.body.userId;
+
+    try {
+        const users = await User.findByIdAndDelete(userId);
+        res.send("User deleted Successfully")
+
+    } catch (err) {
+        res.status(400).send("Something went wrong")
+    }
+})
+
+// patch user API - updating the data of user
+app.patch("/user", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate({ _id: userId }, data,{ returnDocument: "before" });
+        console.log(user)
+        res.send("User updated successfully");
+
+    } catch (err) {
+        res.status(400).send("Something went wrong");
+    }
+})
 
 connectDB()
    .then(()=>{
