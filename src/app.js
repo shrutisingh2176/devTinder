@@ -3,20 +3,34 @@ const express = require("express");
 const connectDB = require("./config/database");
 const User = require("./models/user");
 const app = express();
-
+const {validateSignupData}= require ("./utils/validation");
+const bycrpt = require("bcrypt");
 app.use(express.json());  // midddleware for reading json data and converting it into js object
 
 
 app.post("/signup", async (req,res)=>{
-console.log(req.body);
-//Creating new instance of the user model
-const user = new User ( req.body);
-
 try{
+    //Validation of data 
+    validateSignupData(req);
+    const {firstName,lastName,emailId,password}= req.body
+    
+    //Encrypt the password 
+     const passwordHash = await bycrpt.hash(password, 10)
+
+
+//Creating new instance of the user model
+const user = new User ({
+    firstName,
+    lastName,
+    emailId,
+    password:passwordHash,
+} );
+
+
 await user.save();
 res.send("User Added Successfully!!");
 } catch(err){
-    res.status(400).send("Error saving the user " + err.message);
+    res.status(400).send("ERROR:  " + err.message);
 };
 });
 
@@ -107,7 +121,7 @@ app.patch("/user/:userId", async (req, res) => {
         res.send("User updated successfully");
 
     } catch (err) {
-        res.status(400).send("UPDATE FAILED: ", err.message);
+        res.status(400).send("UPDATE FAILED: "+ err.message);
     }
 })
 
