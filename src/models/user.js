@@ -40,19 +40,22 @@ const userSchema = new mongoose.Schema({
         type:Number,
         min:18,
     },
-    gender:{
-        type:String,
-        gender: {
+     gender: {
         type: String,
+        enum:{
+            values:["male", "female", "others"],
+            message: `{VALUE} is not valid gender type`
+        },
         required: true,
         trim: true,
-        validate(value) {
-            if (!["male", "female", "others"].includes(value)) {
-                throw new Error("Not a valid gender (Male , Female and other)")
-            }
-        }
-    },
-    },
+
+        // validate(value) {
+        //     if (!["male", "female", "others"].includes(value)) {
+        //         throw new Error("Not a valid gender (Male , Female and other)")
+        //     }
+        },
+    
+    
     photoUrl:{
      type:String,
      default:"https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg",
