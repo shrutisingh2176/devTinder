@@ -50,7 +50,7 @@ authRouter.post("/login" , async (req,res) =>{
           
 
             res.cookie("token", token);
-            res.send("Login Successfull")
+            res.send(user);
 
            
         } else {

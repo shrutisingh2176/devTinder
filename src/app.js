@@ -3,7 +3,12 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const cookieParser = require ("cookie-parser");
+const cors = require("cors");
 
+app.use(cors({
+   origin : "http://localhost:5173",  // whitelist of allowed origins
+   credentials: true,
+}));
 app.use(express.json());  // midddleware for reading json data and converting it into js object
 app.use(cookieParser());
 
