@@ -7,7 +7,7 @@ const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies
         if (!token) {
-            throw new Error("Not a Vaid token !!")
+           return res.status(401).send("Please Login First!!!")
         }
 
         const decodedObj = await jwt.verify(token, "999@Akshad")
