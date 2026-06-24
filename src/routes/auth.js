@@ -9,7 +9,7 @@ authRouter.post("/signup", async (req,res)=>{
 try{
     //Validation of data 
     validateSignupData(req);
-    const {firstName,lastName,emailId,password,gender}= req.body
+    const {firstName,lastName,emailId,password}= req.body
     
     //Encrypt the password 
      const passwordHash = await bcrypt.hash(password, 10)
@@ -21,14 +21,21 @@ const user = new User ({
     lastName,
     emailId,
     password:passwordHash,
-    gender,
+    
 } );
 
 
-await user.save();
-res.send("User Added Successfully!!");
+const savedUser = await user.save();
+    const token = await savedUser.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000),
+    });
+
+res.send({ message: "User Added Successfully!!",
+            data: savedUser });
 } catch(err){
-    res.status(400).send("ERROR:  " + err.message);
+    res.status(400).send({ message: "ERROR:  " + err.message });
 };
 });
 
